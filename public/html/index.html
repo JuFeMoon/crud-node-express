@@ -5,67 +5,72 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/public/css/style.css">
 </head>
 <body>
-    <header class="bg-dark text-center py-3 progress-bar-striped progress-bar-animated">
-        <big class="text-light"><strong>Formulario Inasistencias</strong></big>
+    <header class="bg-dark py-3 text-center">
+        <big class="text-light"><strong>CRUD</strong></big>
     </header>
-
-<!-- 
-            correo abc (texto email)
-            apellido y nombre (texto corto)
-            cuil (numero 11 cifras max)
-            desde (fecha)
-            hasta (fecha)
-            tipo de inasistencia (lista checkbox con opcion
-                                    "otro" para acceder a respuesta con texto)
-            cursos y materias afectado/as o cargo (texto largo)
-            observaciones (texto largo)
-            importante (checkbox unico)
--->
+    
+    <div class="bg-dark container d-flex justify-content-center justify-content-around w-50 p-3 my-3 rounded" id="contenedorControles">
+            <input type="search" placeholder="Buscar..." class="form-control w-50">
+            <a href=""><i class="fa-solid fa-magnifying-glass fa-2x text-primary"></i></a>
+            <a href=""><i class="fa-solid fa-circle-plus text-success fa-2x"></i></a>
+            <a href=""><i class="fa-solid fa-circle-minus text-danger fa-2x "></i></a>
+            <a href=""><i class="fa-solid fa-pen-to-square text-warning fa-2x"></i></a>
+    </div>
 
     <main>
-        <div class="container-center rounded bg-dark p-3 m-5 w-25 mx-auto progress-bar-striped progress-bar-animated">
-            <div>
-                <label for="correoABC" class="text-light">Correo ABC</label>
-                <input type="email" id="correoABC" class="form-control">
-            </div>
-            <div>
-                <label for="apellidoNombre" class="text-light">Apellido y nombre</label>
-                <input type="text" id="apellidoNombre" class="form-control">
-            </div>
-            <div>
-                <label for="cuil" class="text-light">CUIL</label>
-                <input type="number" id="cuil" class="form-control">
-            </div>
-            <div>
-                <label for="fechaInicial" class="text-light">Desde (fecha inicial)</label>
-                <input type="date" id="fechaInicial" class="form-control">
-            </div>
-            <div>
-                <label for="fechaFinal" class="text-light">Hasta (fecha final)</label>
-                <input type="date" id="fechaFinal" class="form-control">
-            </div>
-            <div>
-                <label for="tipoInasistencia" class="text-light">Tipo de inasistencia</label>
-                <ul>
-                    <label for=""></label>
-                    <input type="checkbox" id="" class="form-control">
-                </ul>
-            </div>
-            <div>
-                <label for="cursosMateriasAfectadas" class="text-light">Cursos y materias afectadas</label>
-                <input type="text" id="cursosMateriasAfectadas" class="form-control">
-            </div>
-            <div>
-                <label for="observaciones" class="text-light">Observaciones</label>
-                <input type="text" id="observaciones" class="form-control">
-            </div>
-            <div>
-                <label for="importante" class="text-light">IMPORTANTE</label>
-                <input type="checkbox" id="importante" class="form-control">
-            </div>
+        <div class="container d-flex justify-content-center align-items-center rounded my-3">
+            <table class="table table-striped text-center table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Seleccionar</th>
+                        <th>ID Venta</th>
+                        <th>Cliente</th>
+                        <th>Producto</th>
+                        <th>Categoría</th>
+                        <th>Sucursal</th>
+                        <th>Precio Final</th>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Estado Stock</th>
+                    </tr>
+                </thead>
+
+                <div>
+                    <tr class>
+                        <td><input type="checkbox"></td>
+                        <td>
+                            1
+                        </td>
+                        <td>hola</td>
+                        <td>hola</td>
+                        <td>hola</td>
+                        <td>hola</td>
+                        <td>hola</td>
+                        <td>hola</td>
+                        <td>hola</td>
+                        <td>hola</td>
+                    </tr>
+
+                <tfoot class="table-dark">
+                    <th>Seleccionar</th>
+                    <th>ID Venta</th>
+                    <th>Cliente</th>
+                    <th>Producto</th>
+                    <th>Categoría</th>
+                    <th>Sucursal</th>
+                    <th>Precio Final</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Estado Stock</th>
+                </tfoot>
+
+            </table>
         </div>
+
     </main>
 
     <footer>
