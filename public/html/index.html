@@ -6,28 +6,303 @@
     <title>Document</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/public/css/style.css">
+    <style>
+        .btn:focus:not(:focus-visible) {
+            outline: none;
+            box-shadow: none;
+        }
+        .dropdown-toggle::after {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-    <header class="bg-dark py-3 text-center">
-        <big class="text-light"><strong>CRUD</strong></big>
+    <header class="bg-dark py-3 text-center progress-bar-striped progress-bar-animated">
+        <big class="text-light shadow"><strong>CRUD</strong></big>
     </header>
     
-    <div class="bg-dark container d-flex justify-content-center justify-content-around w-50 p-3 my-3 rounded" id="contenedorControles">
-            <input type="search" placeholder="Buscar..." class="form-control w-50">
-            <a href=""><i class="fa-solid fa-magnifying-glass fa-2x text-primary"></i></a>
-            <a href=""><i class="fa-solid fa-circle-plus text-success fa-2x"></i></a>
-            <a href=""><i class="fa-solid fa-circle-minus text-danger fa-2x "></i></a>
-            <a href=""><i class="fa-solid fa-pen-to-square text-warning fa-2x"></i></a>
+            <!-- BARRA DE HERRAMIENTAS -->
+    <div class="bg-dark container d-flex align-items-center justify-content-center justify-content-around w-50 p-3 my-3 rounded" id="contenedorControles">
+            <input name="campoBusqueda" type="search" placeholder="Buscar..." class="form-control w-50">
+            <div class="d-flex align-items-center justify-content-around gap-2 text-light">
+                <label for="">Mostrar</label>
+                <input name="inputCantidadElementos" value="5" type="number" class="form-control w-25 bg-dark text-muted" disabled>
+                <label for="">elementos</label>
+            </div>
+            <button class="btn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                <strong class="btn btn-success text-light">Agregar</strong>
+            </button>
+            <div class="dropdown-menu">
+                <button class="btn dropdown-item" id="agregarEditarVenta" type="button">
+                    Ejemplo
+                    <!-- <i class="fa-solid fa-circle-plus text-success fa-2x"></i> -->
+                </button>
+                <div class="dropdown-divider"></div>
+                <button data-target="#modalAgregarVenta" class="btn dropdown-item" data-toggle="modal" type="button">
+                    Venta
+                </button>
+                <div class="dropdown-divider"></div>
+                <button data-target="#modalAgregarProducto" class="btn dropdown-item" data-toggle="modal" type="button">
+                    Producto
+                </button>
+            </div>
+            <button name="botonFiltrar" class="btn" type="button">
+                <strong class="btn btn-primary text-light">Filtrar</strong>
+            </button>
     </div>
 
+
+
+
+
+
+            <!-- MODAL PARAMETROS DE BUSQUEDA (FILTRAR) -->
+    <div class="modal fade" tabindex="-1" aria-labelledby="tituloFiltrar" aria-hidden="true" id="modalFiltrar">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Filtrar Listado por Parametros</h5>
+                    <button class="close" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <!-- CATEGORIA -->
+                    <div class="form-group">
+                        <label class="form-label">Categoría</label>
+                        <select name="selectCategoriaFiltro" class="form-control">
+                            <option value="">Todas las categorías</option>
+                            <option value="categoria1">Categoría 1</option>
+                            <option value="categoria2">Categoría 2</option>
+                        </select>
+                    </div>
+                    
+                    <!-- SUCURSAL -->
+                    <div class="form-group">
+                        <label class="form-label">Sucursal</label>
+                        <select name="selectSucursalFiltro" class="form-control">
+                            <option value="">Todas las sucursales</option>
+                            <option value="sucursal1">Sucursal 1</option>
+                            <option value="sucursal2">Sucursal 2</option>
+                        </select>
+                    </div>
+                    
+                    <!-- ESTADO STOCK -->
+                    <div class="form-group">
+                        <label class="form-label">Estado de Stock</label>
+                        <select name="selectStockFiltro" class="form-control">
+                            <option value="">Cualquier estado</option>
+                            <option value="disponible">Disponible</option>
+                            <option value="agotado">Agotado</option>
+                        </select>
+                    </div>
+
+                    <!-- PRECIO FINAL -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="parametroPrecioMin" class="form-label">Precio Mínimo</label>
+                                <input name="parametroPrecioMin" type="number" class="form-control" placeholder="Min">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="parametroPrecioMax" class="form-label">Precio Máximo</label>
+                                <input name="parametroPrecioMax" type="number" class="form-control" placeholder="Max">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FECHA -->
+                    <div class="form-group">
+                        <label for="" class="form-label"></label>
+                        <input name="inputFechaFiltro" type="date" class="form-control">
+                    </div>
+
+                    <!-- HORA -->
+                    <div class="form-group">
+                        <label for="" class="form-label"></label>
+                        <input name="inputHoraFiltro" type="time" class="form-control">
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button name="botonFiltrarAplicar" class="btn btn-primary">Aplicar</button>
+                    <button class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+            <!-- MODAL CONFIRMAR ELIMINACION (func. ELIMINAR) -->
+    <div class="modal fade" tabindex="-1" aria-labelledby="tituloEliminar" aria-hidden="true" id="modalEliminar">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Eliminar Elementos</h5>
+                    <button class="close" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <p>¿Está seguro de que desea eliminar este elemento?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" name="botonConfirmarEliminar">Confirmar</button>
+                    <button type="button" class="btn btn-secondary">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+            <!-- MODAL FORMULARIO AGREGAR FILA (func. AGREGAR) -->
+    <div class="modal fade" tabindex="-1" aria-labelledby="tituloFormAgregar" aria-hidden="true" id="modalAgregarEjemplo">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Agregar Nuevo Elemento</h5>
+                    <button class="close" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="nombreCliente" class="form-label">Nombre del Cliente</label>
+                        <input value="cliente" name="nombreCliente" type="text" class="form-control" placeholder="Ingrese el nombre del cliente">
+                    </div>
+                    <div class="form-group">
+                        <label for="nombreProducto" class="form-label">Nombre del Producto</label>
+                        <input value="producto" name="nombreProducto" type="text" class="form-control" placeholder="Ingrese el nombre del producto">
+                    </div>
+                    <div class="form-group">
+                        <label for="categoria" class="form-label">Categoría</label>
+                        <select name="selectCategoria" class="form-control">
+                            <option value="">Seleccione una categoría</option>
+                            <option value="categoria1" selected>Categoría 1</option>
+                            <option value="categoria2">Categoría 2</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="selectSucursal" class="form-label">Sucursal</label>
+                        <select name="selectSucursal" class="form-control">
+                            <option value="">Seleccione la sucursal</option>
+                            <option value="sucursal1">Sucursal 1</option>
+                            <option value="sucursal2">Sucursal 2</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="precioFinal" class="form-label">Precio Final</label>
+                        <input value="100" name="precioFinal" type="float" class="form-control" placeholder="Ingrese el precio final">
+                    </div>
+                    <div class="form-group">
+                        <label for="fecha" class="form-label">Fecha</label>
+                        <input value="2026-06-04" name="fecha" type="date" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="hora" class="form-label">Hora</label>
+                        <input value="12:00" name="hora" type="time" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="estadoStock" class="form-label">Estado de Stock</label>
+                        <select name="selectStock" class="form-control">
+                            <option value="">Estado de Stock</option>
+                            <option value="disponible" selected>Disponible</option>
+                            <option value="agotado">Agotado</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button name="botonGuardar" type="button" class="btn btn-primary" data-dismiss="modal">Guardar</button>
+                    <button type="button" class="btn btn-danger text-light" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+            <!-- MODAL FORMULARIO EDITAR (EDITAR) -->
+    <div class="modal fade" tabindex="-1" aria-labelledby="tituloFormEditar" aria-hidden="true" id="modalEditarEjemplo">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar Elemento</h5>
+                    <button class="close" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="nombreCliente" class="form-label">Nombre del Cliente</label>
+                        <input value="cliente" name="nombreCliente" type="text" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="nombreProducto" class="form-label">Nombre del Producto</label>
+                        <input value="producto" name="nombreProducto" type="text" class="form-control" placeholder="Ingrese el nombre del producto">
+                    </div>
+                    <div class="form-group">
+                        <label for="categoria" class="form-label">Categoría</label>
+                        <select name="selectCategoria" class="form-control">
+                            <option value="">Seleccione una categoría</option>
+                            <option value="categoria1" selected>Categoría 1</option>
+                            <option value="categoria2">Categoría 2</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="selectSucursal" class="form-label">Sucursal</label>
+                        <select name="selectSucursalEditar" class="form-control">
+                            <option value="">Seleccione la sucursal</option>
+                            <option value="sucursal1">Sucursal 1</option>
+                            <option value="sucursal2">Sucursal 2</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="precioFinal" class="form-label">Precio Final</label>
+                        <input value="100" name="precioFinal" type="float" class="form-control" placeholder="Ingrese el precio final">
+                    </div>
+                    <div class="form-group">
+                        <label for="fecha" class="form-label">Fecha</label>
+                        <input value="2026-06-04" name="fecha" type="date" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="hora" class="form-label">Hora</label>
+                        <input value="12:00" name="hora" type="time" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="estadoStock" class="form-label">Estado de Stock</label>
+                        <select name="selectStock" class="form-control">
+                            <option value="">Estado de Stock</option>
+                            <option value="disponible" selected>Disponible</option>
+                            <option value="agotado">Agotado</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button name="modalEditarGuardar" type="button" class="btn btn-primary" data-dismiss="modal">Guardar</button>
+                    <button type="button" class="btn btn-danger text-light" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+            <!-- CONTENIDO MAIN -->
     <main>
         <div class="container d-flex justify-content-center align-items-center rounded my-3">
             <table class="table table-striped text-center table-bordered">
                 <thead class="table-dark">
                     <tr>
-                        <th>Seleccionar</th>
-                        <th>ID Venta</th>
                         <th>Cliente</th>
                         <th>Producto</th>
                         <th>Categoría</th>
@@ -36,45 +311,39 @@
                         <th>Fecha</th>
                         <th>Hora</th>
                         <th>Estado Stock</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
 
-                <div>
-                    <tr class>
-                        <td><input type="checkbox"></td>
-                        <td>
-                            1
-                        </td>
-                        <td>hola</td>
-                        <td>hola</td>
-                        <td>hola</td>
-                        <td>hola</td>
-                        <td>hola</td>
-                        <td>hola</td>
-                        <td>hola</td>
-                        <td>hola</td>
-                    </tr>
+                <tbody id="cuerpoTabla"></tbody>
 
                 <tfoot class="table-dark">
-                    <th>Seleccionar</th>
-                    <th>ID Venta</th>
-                    <th>Cliente</th>
-                    <th>Producto</th>
-                    <th>Categoría</th>
-                    <th>Sucursal</th>
-                    <th>Precio Final</th>
-                    <th>Fecha</th>
-                    <th>Hora</th>
-                    <th>Estado Stock</th>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Producto</th>
+                        <th>Categoría</th>
+                        <th>Sucursal</th>
+                        <th>Precio Final</th>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Estado Stock</th>
+                        <th>Acciones</th>
+                    </tr>
                 </tfoot>
 
             </table>
         </div>
 
     </main>
-
+            <!-- CONTENIDO FOOTER -->
     <footer>
-
+        
     </footer>
+
+            <!-- SCRIPTS -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="/js/dashboard.js"></script>
 </body>
 </html>
