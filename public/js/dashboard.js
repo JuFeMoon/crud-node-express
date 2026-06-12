@@ -1,13 +1,18 @@
 /*
     FUNCIONALIDADES PENDIENTES:
         -   Sistema de división de elementos en páginas
+                -   Parametro de cantidad de elementos por página
+                -   Elementos de interfaz para navegar diferentes páginas
+                        - Lista horizontal de botones para desplazarse a lo largo de las páginas
+                        - Select para determinar el orden de listado de elementos
+                            - Determinar si este select va a ir en modalFiltrar o en barraHerramientas
 */
+
+// const e = require("express");
 
 const botonGuardar = dqs('[name="botonGuardar"]');
 
 //      -- INTERFAZ FILAS --
-
-//  -- BOTON FUNC. ELIMINAR --
 const botonEliminar = dqs('[name="botonEliminar"]');
 
 //  -- FUNC. EDITAR --
@@ -111,14 +116,14 @@ let ventas = [
 
 let auxVentas = localStorage.getItem('ventas');
 
+let filtros = obtenerFiltros();
+
 if (auxVentas){
     ventas = JSON.parse(auxVentas);
     listarVentas();
 }
 
-
-
-//  -- ABREVIATURAS --
+//  -- ABREVIATURAS (HELPERS) --
 
 function dqs(query){
     return document.querySelector(query);
@@ -163,7 +168,7 @@ botonAgregarEjemplo.addEventListener("click", (e) => {
 function realizarBusqueda(){
     textoBusqueda = campoBusqueda.value;
 
-    listarVentas({ busqueda: campoBusqueda });
+    listarVentas({ busqueda: textoBusqueda });
 }
 
 function obtenerFiltros() {
@@ -174,7 +179,8 @@ function obtenerFiltros() {
         precioMin: dqs('[name="parametroPrecioMin"]').value,
         precioMax: dqs('[name="parametroPrecioMax"]').value,
         fecha: dqs('[name="inputFechaFiltro"]').value,
-        hora: dqs('[name="inputHoraFiltro"]').value
+        horaMin: dqs('[name="inputHoraFiltroMin"]').value,
+        horaMax: dqs('[name="inputHoraFiltroMax"]').value
     };
 }
 
@@ -182,24 +188,29 @@ function obtenerFiltros() {
 
 //  -- ESTRUCTURA DE REFERENCIA --
 //
-// parametros = {
+// filtros = {
 //     categoria,
 //     sucursal,
 //     stock,
 //     precioMin,
 //     precioMax,
 //     fecha,
-//     hora,
+//     horaMin,
+//     horaMax,
 //     busqueda
 // }
 
-function listarVentas(filtros = {obtenerFiltros}){
+function listarVentas(){
+    console.log(filtros)
     let tbody = '';
 
     ventas
         .filter((venta) => {
-            // Check text search
-            if (filtros.busqueda && !comparaciones.some(valor =>
+            const horaMinMinutosFiltro = convMinutos(filtros.horaMin);
+            const horaMaxMinutosFiltro = convMinutos(filtros.horaMax);
+            const horaVentaMinutos = convMinutos(venta.hora);
+
+            if (filtros.busqueda && !venta.some(valor =>
                 String(valor).toLowerCase().includes(filtros.busqueda.toLowerCase())
             )) return false;
             
@@ -218,9 +229,12 @@ function listarVentas(filtros = {obtenerFiltros}){
             
             // Check fecha
             if (filtros.fecha && venta.fecha !== filtros.fecha) return false;
-            
+
             // Check hora
-            if (filtros.hora && venta.hora !== filtros.hora) return false;
+            // if (Number(filtros.horaMin) && Number(venta.hora) < Number(filtros.horaMin)) return false;
+            // if (Number(filtros.horaMax) && Number(venta.hora) > Number(filtros.horaMax)) return false;
+            if (filtros.horaMin && horaVentaMinutos < horaMinMinutosFiltro) return false;
+            if (filtros.horaMax && horaVentaMinutos > horaMaxMinutosFiltro) return false;
             
             return true;
         })
@@ -288,10 +302,16 @@ function listarVentas(filtros = {obtenerFiltros}){
     });
 };
 
+function convMinutos(horaString) {
+  if (!horaString) return 0;
+  let [hours, minutes] = horaString.split(':').map(Number);
+  return (hours * 60) + minutes;
+}
+
 const botonFiltrarAplicar = dqs('[name="botonFiltrarAplicar"]');
 botonFiltrarAplicar.addEventListener('click', () => {
-    const filtros = obtenerFiltros();
-    listarVentas(filtros);
+    filtros = obtenerFiltros();
+    listarVentas();
     $('#modalFiltrar').modal('hide');
 });
 

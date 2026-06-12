@@ -24,11 +24,6 @@
             <!-- BARRA DE HERRAMIENTAS -->
     <div class="bg-dark container d-flex align-items-center justify-content-center justify-content-around w-50 p-3 my-3 rounded" id="contenedorControles">
             <input name="campoBusqueda" type="search" placeholder="Buscar..." class="form-control w-50">
-            <div class="d-flex align-items-center justify-content-around gap-2 text-light">
-                <label for="">Mostrar</label>
-                <input name="inputCantidadElementos" value="5" type="number" class="form-control w-25 bg-dark text-muted" disabled>
-                <label for="">elementos</label>
-            </div>
             <button class="btn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
                 <strong class="btn btn-success text-light">Agregar</strong>
             </button>
@@ -116,14 +111,24 @@
 
                     <!-- FECHA -->
                     <div class="form-group">
-                        <label for="" class="form-label"></label>
+                        <label for="" class="form-label">Fecha</label>
                         <input name="inputFechaFiltro" type="date" class="form-control">
                     </div>
 
                     <!-- HORA -->
-                    <div class="form-group">
-                        <label for="" class="form-label"></label>
-                        <input name="inputHoraFiltro" type="time" class="form-control">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group text-mute">
+                                <label for="" class="form-label">Desde...</label>
+                                <input name="inputHoraFiltroMin" type="time" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group text-mute">
+                                <label for="" class="form-label">Hasta...</label>
+                                <input name="inputHoraFiltroMax" type="time" class="form-control">
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -205,13 +210,19 @@
                         <label for="precioFinal" class="form-label">Precio Final</label>
                         <input value="100" name="precioFinal" type="float" class="form-control" placeholder="Ingrese el precio final">
                     </div>
-                    <div class="form-group">
-                        <label for="fecha" class="form-label">Fecha</label>
-                        <input value="2026-06-04" name="fecha" type="date" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="hora" class="form-label">Hora</label>
-                        <input value="12:00" name="hora" type="time" class="form-control">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="fecha" class="form-label">Fecha</label>
+                                <input value="2026-06-04" name="fecha" type="date" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="hora" class="form-label">Hora</label>
+                                <input value="12:00" name="hora" type="time" class="form-control">
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="estadoStock" class="form-label">Estado de Stock</label>
@@ -300,38 +311,27 @@
             <!-- CONTENIDO MAIN -->
     <main>
         <div class="container d-flex justify-content-center align-items-center rounded my-3">
-            <table class="table table-striped text-center table-bordered">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Cliente</th>
-                        <th>Producto</th>
-                        <th>Categoría</th>
-                        <th>Sucursal</th>
-                        <th>Precio Final</th>
-                        <th>Fecha</th>
-                        <th>Hora</th>
-                        <th>Estado Stock</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
+            <div class="overflow-auto" style="max-height: 66vh; width: 100%;">
+                <table class="table table-striped text-center table-bordered">
+                    <thead class="table-dark sticky-top">
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Producto</th>
+                            <th>Categoría</th>
+                            <th>Sucursal</th>
+                            <th>Precio Final</th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Estado Stock</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
 
-                <tbody id="cuerpoTabla"></tbody>
+                    <tbody id="cuerpoTabla">
+                    </tbody>
 
-                <tfoot class="table-dark">
-                    <tr>
-                        <th>Cliente</th>
-                        <th>Producto</th>
-                        <th>Categoría</th>
-                        <th>Sucursal</th>
-                        <th>Precio Final</th>
-                        <th>Fecha</th>
-                        <th>Hora</th>
-                        <th>Estado Stock</th>
-                        <th>Acciones</th>
-                    </tr>
-                </tfoot>
-
-            </table>
+                </table>
+            </div>
         </div>
 
     </main>
