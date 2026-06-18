@@ -2,7 +2,6 @@ const express = require('express');
 const path = require('path');
 const session = require('express-session');
 var FileStore = require('session-file-store')(session);
-const dashboard = require 
 
 const app = express();
 
@@ -29,7 +28,9 @@ app.use(session(
 app.use(express.static(path.join(__dirname, '/public')));
 
 const usuariosRoutes = require("./routes/usuarios-routes");
+const dashboardRoutes = require("./routes/dashboard-routes");
 
 app.use(usuariosRoutes);
+app.use(dashboardRoutes);
 
-app.listen(3000, () => console.log('Server running on port 3000'));
+app.listen(3000, '0.0.0.0', () => console.log('Server running on port 3000'));

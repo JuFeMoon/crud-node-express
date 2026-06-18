@@ -54,6 +54,7 @@ let parametroFecha = dqs('[name="parametroFecha"]');
 
 //  -- HORA --
 let parametroHora = dqs('[name="parametroHora"]');
+
 let indexEdicion = null;
 
 
@@ -266,10 +267,12 @@ function listarVentas(){
     let filas = dqsAll("table tbody tr");
     let idxAEliminar = null;
 
-    filas.forEach(tr =>{
+    filas
+    .forEach(tr =>{
 
     //  -   Funcionalidad del boton 'Eliminar' dentro de cada fila individual   -
         const btnEliminarFila = tr.querySelector('[name="botonEliminarElemento"]');
+
         btnEliminarFila.addEventListener('click', (e) => {
             e.stopPropagation();
             idxAEliminar = Number(tr.dataset.index);
@@ -277,6 +280,7 @@ function listarVentas(){
         });
 
         const btnEditarFila = tr.querySelector('button.btn-warning');
+        
         btnEditarFila.addEventListener('click', (e) => {
             e.stopPropagation();
 
@@ -317,23 +321,23 @@ botonFiltrarAplicar.addEventListener('click', () => {
 
 botonGuardar.addEventListener("click", (e) => {
     let formTabla = {
-    nombreCliente: dqs('[name="nombreCliente"]').value,
-    nombreProducto: dqs('[name="nombreProducto"]').value,
-    categoria: dqs('[name="selectCategoria"]').value,
-    selectSucursal: dqs('[name="selectSucursal"]').value,
-    precioFinal: dqs('[name="precioFinal"]').value,
-    fecha: dqs('[name="fecha"]').value,
-    hora: dqs('[name="hora"]').value,
-    selectStock: dqs('[name="selectStock"]').value
+        nombreCliente: dqs('[name="nombreCliente"]').value,
+        nombreProducto: dqs('[name="nombreProducto"]').value,
+        categoria: dqs('[name="selectCategoria"]').value,
+        selectSucursal: dqs('[name="selectSucursal"]').value,
+        precioFinal: dqs('[name="precioFinal"]').value,
+        fecha: dqs('[name="fecha"]').value,
+        hora: dqs('[name="hora"]').value,
+        selectStock: dqs('[name="selectStock"]').value
     };
     
     ventas.push(formTabla);
     
     localStorage.setItem("ventas", JSON.stringify(ventas));
     
-    $('#modalAgregarEjemplo').modal('hide');
-
     listarVentas();
+    
+    $('#modalAgregarEjemplo').modal('hide');
 });
 
 function editarVenta(index) {
@@ -371,7 +375,12 @@ function guardarEdicion() {
     };
 
     localStorage.setItem("ventas", JSON.stringify(ventas));
+
     listarVentas();
     $("#modalEditarEjemplo").modal("hide");
     indexEdicion = null;
 }
+
+dqs('[name="botonProductos"]').addEventListener('click', (e) => {
+    window.location.href = "/dashboard/productos";
+});

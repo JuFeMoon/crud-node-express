@@ -1,3 +1,5 @@
+const path = require('path');
+
 function eliminar(req, res) {
     const { ids } = req.body;
     try {
@@ -8,6 +10,11 @@ function eliminar(req, res) {
     }
 }
 
+function productos(req, res) {
+    res.sendFile(path.join(__dirname, '../public/html/productos.html'));
+}
+
 module.exports = {
-    eliminar
+    eliminar,
+    productos
 };

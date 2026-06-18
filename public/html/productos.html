@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .btn:focus:not(:focus-visible) {
+            outline: none;
+            box-shadow: none;
+        }
+        .dropdown-toggle::after {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CONTENIDO HEADER -->
+    <header>
+        <div class="bg-dark text-center text-light progress-bar-striped py-3">
+            <big>
+                <strong>PRODUCTOS</strong>
+            </big>
+        </div>
+    </header>
+
+
+
+    <!-- BARRA DE HERRAMIENTAS -->
+    <div class="container d-flex justify-content-around">
+        <div class="d-flex justify-content-around w-50 p-3 bg-dark rounded my-3 ">
+            <input name="inputBuscarProd" type="text" class="form-control w-50" placeholder="Buscar...">
+            <button name="btnModalAgregarProd" class="btn btn-success text-light">
+                <strong>Agregar</strong>
+            </button>
+            <!-- <button name="btnModalEliminarProd" class="btn btn-danger text-light">
+                <strong>Eliminar</strong>
+            </button> -->
+            <!-- <button name="btnModalEditarProd" class="btn btn-warning">
+                <strong>Editar</strong>
+            </button> -->
+            <button name="btnModalFiltrarProd" class="btn btn-primary text-light">
+                <strong>Filtrar</strong>
+            </button>
+        </div>
+    </div>
+
+
+
+    <!-- CONTENIDO MAIN -->
+    <main>
+
+        <!-- TABLA DE CONTENIDOS -->
+        <div class="container d-flex justify-content-center align-items-center my-3">
+            <div class="overflow-auto" style="max-height: 66vh; width: 100%;">
+                <table class="table table-bordered text-center">
+                    <thead class="table-dark sticky-top text-light text-center">
+                        <tr>
+                            <th>Nombre Producto</th>
+                            <th>Categoría</th>
+                            <th>Marca</th>
+                            <th>Distribuidor</th>
+                            <th>Precio</th>
+                            <th>Stock</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tbodyProductos">
+                        <!-- 
+                            Ejemplo de contenido:
+                        <tr>
+                            <td>Lapiz</td>
+                            <td>Utiles Escolares</td>
+                            <td>Faber Castell</td>
+                            <td>EscolAr</td>
+                            <td>5600</td>
+                            <td>30</td>
+                            <td>disponible</td>
+                        </tr>
+                        -->
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </main>
+
+
+
+    <!-- MODAL AGREGAR PRODUCTO -->
+    <div class="modal" tabindex="-1" aria-hidden="true" id="modalAgregarProd">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Agregar Nuevo Producto</h5>
+                    <button class="close" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="agregarNombreProd" class="form-label">Nombre de Producto</label>
+                        <input name="agregarNombreProd" type="text" class="form-control" placeholder="Ingrese el nombre aquí.">
+                    </div>
+                    <div class="form-group">
+                        <label for="agregarCategoriaProd" class="form-label">Categoria de Producto</label>
+                        <input name="agregarCategoriaProd" type="text" class="form-control" placeholder="Ingrese la categoría aquí.">
+                    </div>
+                    <div class="form-group">
+                        <label for="agregarMarcaProd" class="form-label">Marca</label>
+                        <input name="agregarMarcaProd" type="text" class="form-control" placeholder="Ingrese la marca aquí.">
+                    </div>
+                    <div class="form-group">
+                        <label for="agregarDistribuidorProd" class="form-label">Distribuidor</label>
+                        <input name="agregarDistribuidorProd" type="text" class="form-control" placeholder="Ingrese el distribuidor aquí.">
+                    </div>
+                    <div class="form-group">
+                        <label for="agregarPrecioProd" class="form-label">Precio</label>
+                        <input name="agregarPrecioProd" type="number" class="form-control" placeholder="Ingrese el precio aquí.">
+                    </div>
+                    <div class="form-group">
+                        <label for="agregarStockProd" class="form-label">Stock</label>
+                        <input name="agregarStockProd" type="number" class="form-control" placeholder="Ingrese el stock aquí.">
+                    </div>
+                    <div class="form-group">
+                        <label for="agregarEstadoProd" class="form-label">Estado</label>
+                        <select name="agregarEstadoProd" class="form-control">
+                            <option value="">Seleccione el Estado</option>
+                            <option value="disponible">Disponible</option>
+                            <option value="agotado">Agotado</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button name="btnAgregarProd" type="button" class="btn btn-success" data-dismiss="modal">Confirmar</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL ELIMINAR PRODUCTO -->
+    <div class="modal" tabindex="-1" aria-hidden="true" id="modalEliminarProd">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Eliminar elemento</h5>
+                    <button class="close" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <h4>¿Está seguro que desea eliminar este elemento?</h4>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button name="btnEliminarProd" type="button" class="btn btn-danger" data-dismiss="modal">Eliminar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- MODAL EDITAR PRODUCTO -->
+    <div class="modal" tabindex="-1" aria-hidden="true" id="modalEditarProd">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar Elemento</h5>
+                    <button class="close" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="editarNombreProd" class="form-label">Nombre de Producto</label>
+                        <input name="editarNombreProd" type="text" class="form-control" placeholder="Ingrese el nombre aquí.">
+                    </div>
+                    <div class="form-group">
+                        <label for="editarCategoriaProd" class="form-label">Categoria de Producto</label>
+                        <input name="editarCategoriaProd" type="text" class="form-control" placeholder="Ingrese la categoría aquí.">
+                    </div>
+                    <div class="form-group">
+                        <label for="editarMarcaProd" class="form-label">Marca</label>
+                        <input name="editarMarcaProd" type="text" class="form-control" placeholder="Ingrese la marca aquí.">
+                    </div>
+                    <div class="form-group">
+                        <label for="editarDistribuidorProd" class="form-label">Distribuidor</label>
+                        <input name="editarDistribuidorProd" type="text" class="form-control" placeholder="Ingrese el distribuidor aquí.">
+                    </div>
+                    <div class="form-group">
+                        <label for="editarPrecioProd" class="form-label">Precio</label>
+                        <input name="editarPrecioProd" type="number" class="form-control" placeholder="Ingrese el precio aquí.">
+                    </div>
+                    <div class="form-group">
+                        <label for="editarStockProd" class="form-label">Stock</label>
+                        <input name="editarStockProd" type="number" class="form-control" placeholder="Ingrese el stock aquí.">
+                    </div>
+                    <div class="form-group">
+                        <label for="agregarEstadoProd" class="form-label">Estado</label>
+                        <select name="agregarEstadoProd" class="form-control">
+                            <option value="">Seleccione el Estado</option>
+                            <option value="disponible">Disponible</option>
+                            <option value="agotado">Agotado</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button name="btnEditarProd" type="button" class="btn btn-success" data-dismiss="modal">Confirmar</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- MODAL FILTRAR PRODUCTO -->
+    <div class="modal" tabindex="-1" aria-hidden="true" id="modalFiltrarProd">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Filtros de Búsqueda</h5>
+                    <button class="close" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="campo1" class="form-label">campo1</label>
+                        <input type="text" class="form-control" placeholder="campo1">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button name="btnFiltrarProd" type="button" class="btn btn-success" data-dismiss="modal">Confirmar</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- CONTENIDO FOOTER -->
+    <footer>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="/js/productos.js"></script>
+</body>
+</html>
