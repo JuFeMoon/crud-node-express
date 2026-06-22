@@ -60,6 +60,7 @@ let agregarMarcaProd = dqs('[name="agregarMarcaProd"]');
 let agregarStockProd = dqs('[name="agregarStockProd"]');
 let agregarEstadoProd = dqs('[name="agregarEstadoProd"]');
 let btnAgregarProd = dqs('[name="btnAgregarProd"]');
+let selectPresetAgregar = dqs('[name="selectPresetAgregar"]');
 
     // ELEMENTOS MODAL ELIMINAR
 const btnEliminarProd = dqs('[name="btnEliminarProd"]');
@@ -92,19 +93,14 @@ let productos = {
 };
 
 let ultimoId = Number(localStorage.getItem('ultimoId')) || 0;
-
 let indexEliminar = null;
-
 let indexEdicion = null;
-
 let auxProductos = localStorage.getItem('productos');
 
 if(auxProductos){
     productos = JSON.parse(auxProductos);
     listarProductos();
 };
-
-
 
     // FUNCIONALIDADES DEL SISTEMA
 
@@ -198,83 +194,81 @@ function guardarCamposAgregar(){
 
     listarProductos();
 
-    
+    agregarDistribuidorProd.value = '';
+    agregarCategoriaProd.value = '';
+    agregarNombreProd.value = '';
+    agregarPrecioProd.value = '';
+    agregarEstadoProd.value = '';
+    agregarMarcaProd.value = '';
+    agregarStockProd.value = '';
 
     $('#modalAgregarProd').modal('hide');
 };
 
-function editarProducto(indexParam){
-    let producto = productos[indexParam];
-    indexEdicion = indexParam;
+function editarProducto(){
+    let producto = productos[indexEdicion];
 
-    editarDistribuidorProd.value = producto.distribuidorProdProd;
+    editarDistribuidorProd.value = producto.distribuidorProd;
     editarCategoriaProd.value = producto.categoriaProd;
     editarNombreProd.value = producto.nombreProd;
     editarPrecioProd.value = producto.precioProd;
+    editarEstadoProd.value = producto.estadoProd;
     editarMarcaProd.value = producto.marcaProd;
     editarStockProd.value = producto.stockProd;
 
-    listarProductos();
+    // listarProductos();
 
     $('#modalEditarProd').modal('show');
 
     btnEditarProd.addEventListener('click', (e) => {
-        if(indexEdicion == null || indexEdicion < 0 || indexEdicion >= productos.length) {
+        if(indexEdicion == null || indexEdicion < 0 || indexEdicion > productos.length) {
             alert('No se encontro la fila a editar')
             return
         };
 
-        productos[indexParam] = {
+        productos[indexEdicion] = {
             distribuidorProd: editarDistribuidorProd.value,
             categoriaProd: editarCategoriaProd.value,
             nombreProd: editarNombreProd.value,
             precioProd: editarPrecioProd.value,
+            estadoProd: editarEstadoProd.value,
             marcaProd: editarMarcaProd.value,
             stockProd: editarStockProd.value
         };
 
         localStorage.setItem('productos', JSON.stringify(productos));
         listarProductos();
+
         indexEdicion = null;
         editarDistribuidorProd.value = '';
         editarCategoriaProd.value = '';
         editarNombreProd.value = '';
         editarPrecioProd.value = '';
+        editarEstadoProd.value = '';
         editarMarcaProd.value = '';
         editarStockProd.value = '';
+        
         $('#modalEdicionProd').modal('hide');
     });
 };
 
-// function guardarCamposEditar(){
-//     if(indexEdicion == null || indexEdicion < 0 || indexEdicion >= productos.length) {
-//         alert('No se encontro la fila a editar')
-//         return
-//     };
-
-//     productos[index] = {
-//         distribuidorProd: editarDistribuidorProd.value,
-//         categoriaProd: editarCategoriaProd.value,
-//         nombreProd: editarNombreProd.value,
-//         precioProd: editarPrecioProd.value,
-//         marcaProd: editarMarcaProd.value,
-//         stockProd: editarStockProd.value
-//     };
-
-//     localStorage.setItem('productos', JSON.stringify(productos));
-//     listarProductos();
-//     indexEdicion = null;
-//     $('#modalEdicionProd').modal('hide');
-// };
-
-
-
     // ESCUCHA DE EVENTOS
 
         //  BOTONES MODALES
-btnModalAgregarProd.addEventListener('click', (e => {
+btnModalAgregarProd.addEventListener('click', (e) => {
     $('#modalAgregarProd').modal('show');
-}));
+    let predefinidos = e.shiftKey;
+    if(predefinidos){
+        agregarDistribuidorProd.value = 'distribuidor';
+        agregarCategoriaProd.value = 'categoria';
+        agregarEstadoProd.value = 'disponible';
+        agregarNombreProd.value = 'producto';
+        agregarPrecioProd.value = '100';
+        agregarMarcaProd.value = 'marca';
+        agregarStockProd.value = '39';
+    };
+});
+
 btnAgregarProd.addEventListener('click', (guardarCamposAgregar));
 
 // btnModalEliminarProd.addEventListener('click', (e => {
