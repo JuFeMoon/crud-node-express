@@ -1,21 +1,5 @@
-/*
-    FUNCIONALIDADES PENDIENTES:
-        -   Sistema de división de elementos en páginas
-                -   Parametro de cantidad de elementos por página
-                -   Elementos de interfaz para navegar diferentes páginas
-                        - Lista horizontal de botones para desplazarse a lo largo de las páginas
-                        - Select para determinar el orden de listado de elementos
-                            - Determinar si este select va a ir en modalFiltrar o en barraHerramientas
-*/
-
-// const e = require("express");
-
 const botonGuardar = dqs('[name="botonGuardar"]');
-
-//      -- INTERFAZ FILAS --
 const botonEliminar = dqs('[name="botonEliminar"]');
-
-//  -- FUNC. EDITAR --
 const botonEditar = dqs('#botonEditar');
 const botonGuardarEdicion = dqs('[name="modalEditarGuardar"]');
 
@@ -23,40 +7,25 @@ const botonGuardarEdicion = dqs('[name="modalEditarGuardar"]');
 
 //      -- BARRA DE HERRAMIENTAS --
 
-//  -- AGREGAR EJEMPLO (OPCION DESPLIEGUE) --
 const botonAgregarEjemplo = dqs('#agregarEditarVenta');
-
-//  -- MOSTRAR MODAL FILTRADO --
 const botonFiltrar = dqs('[name="botonFiltrar"]');
-
-//  -- CAMPO DE BUSQUEDA POR TEXTO --
 const campoBusqueda = dqs('[name="campoBusqueda"]');
 
 
 
 //      -- FILTRAR BUSQUEDA --
 
-//  -- CATEGORIA --
 let parametroCategoria = dqs('[name="parametroCategoria"]');
-
-//  -- SUCURSAL --
 let parametroSucursal = dqs('[name="parametroSucursal"]');
-
-//  -- PRECIOS --
 let parametroPrecioMin = dqs('[name="parametroPrecioMin"]');
 let parametroPrecioMax = dqs('[name="parametroPrecioMax"]');
-
-//  -- FECHA --
 let parametroFecha = dqs('[name="parametroFecha"]');
-
-//  -- HORA --
 let parametroHora = dqs('[name="parametroHora"]');
-
 let indexEdicion = null;
-
 let tablaPrueba = dqs('[name="tablaPrueba"]');
-
 let selectProductos = dqs('[name="selectProductos"]');
+
+
 
 //  -- CAMPOS DE EJEMPLO PREDETERMINADO --
 
@@ -70,22 +39,6 @@ const camposEjPred = {
     hora: '12:00'
 };
 
-/*
-        -- ESTRUCTURAS DE INFORMACION --
-
-ventas [
-    venta(i) {
-        nombreCliente,
-        nombreProducto,
-        categoria,
-        selectSucursal,
-        precioFinal,
-        fecha,
-        hora;
-    };
-];
-*/
-
 
 
 //  -- ALMACENAMIENTO DE DATOS --
@@ -94,7 +47,7 @@ let ventas = [
     // -- (Ejemplo de estructura) --
     // {
     // "nombreCliente": "cliente1",
-    // "nombreProducto": "producto",
+    // "producto": "producto1",
     // "categoria": "categoria1",
     // "selectSucursal": "sucursal1",
     // "precioFinal": "100",
@@ -106,7 +59,6 @@ let ventas = [
 let auxVentas = localStorage.getItem('ventas');
 
 let filtros = obtenerFiltros();
-
 
 let productos = [];
 let ultimoId = Number(localStorage.getItem('ultimoId')) || 0;
@@ -121,6 +73,8 @@ if (auxVentas){
     ventas = JSON.parse(auxVentas);
     listarVentas();
 }
+
+
 
 //  -- ABREVIATURAS (HELPERS) --
 
@@ -177,11 +131,8 @@ botonAgregarEjemplo.addEventListener("click", (e) => {
 
 //      -- FUNCIONES --
 
-//  -- REALIZAR BUSQUEDA --
-
 function realizarBusqueda(){
     textoBusqueda = campoBusqueda.value;
-
     listarVentas({ busqueda: textoBusqueda });
 }
 
@@ -196,21 +147,6 @@ function obtenerFiltros() {
         horaMax: dqs('[name="inputHoraFiltroMax"]').value
     };
 }
-
-//  -- FUNC. BUSQUEDA --
-
-//  -- ESTRUCTURA DE REFERENCIA --
-//
-// filtros = {
-//     categoria,
-//     sucursal,
-//     precioMin,
-//     precioMax,
-//     fecha,
-//     horaMin,
-//     horaMax,
-//     busqueda
-// }
 
 function listarVentas(){
     console.log(filtros)
@@ -234,7 +170,6 @@ function listarVentas(){
             </option>
             `
         });
-    
         
     tablaPrueba.innerHTML = contenidoPrueba
     selectProductos.innerHTML = contenidoSelect
@@ -317,7 +252,6 @@ function listarVentas(){
         });
     });
 
-    // Listener para confirmar eliminación (solo se añade una vez)
     const btnConfirmarEliminar = dqs('[name="botonConfirmarEliminar"]');
     const btnConfirmarEliminarNuevo = btnConfirmarEliminar.cloneNode(true);
     btnConfirmarEliminar.parentNode.replaceChild(btnConfirmarEliminarNuevo, btnConfirmarEliminar);
@@ -370,7 +304,6 @@ function editarVenta(index) {
     const venta = ventas[index];
     indexEdicion = index;
 
-    // Populate form fields with venta data
     dqs('#modalEditarEjemplo [name="nombreCliente"]').value = venta.nombreCliente;
     dqs('#modalEditarEjemplo [name="nombreProducto"]').value = venta.nombreProducto;
     dqs('#modalEditarEjemplo [name="selectCategoria"]').value = venta.categoria;
