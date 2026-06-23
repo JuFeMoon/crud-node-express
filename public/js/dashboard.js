@@ -42,9 +42,6 @@ let parametroCategoria = dqs('[name="parametroCategoria"]');
 //  -- SUCURSAL --
 let parametroSucursal = dqs('[name="parametroSucursal"]');
 
-//  -- STOCK --
-let parametroStock = dqs('[name="parametroStock"]');
-
 //  -- PRECIOS --
 let parametroPrecioMin = dqs('[name="parametroPrecioMin"]');
 let parametroPrecioMax = dqs('[name="parametroPrecioMax"]');
@@ -57,6 +54,9 @@ let parametroHora = dqs('[name="parametroHora"]');
 
 let indexEdicion = null;
 
+let tablaPrueba = dqs('[name="tablaPrueba"]');
+
+let selectProductos = dqs('[name="selectProductos"]');
 
 //  -- CAMPOS DE EJEMPLO PREDETERMINADO --
 
@@ -67,8 +67,7 @@ const camposEjPred = {
     selectSucursal: 'Sucursal',
     precioFinal: '100',
     fecha: '2026-06-04',
-    hora: '12:00',
-    selectStock: 'disponible'
+    hora: '12:00'
 };
 
 /*
@@ -82,17 +81,7 @@ ventas [
         selectSucursal,
         precioFinal,
         fecha,
-        hora,
-        selectStock;
-    };
-];
-
-productos [
-    producto(i) {
-        nombre,
-        categoria,
-        precio,
-        stock;
+        hora;
     };
 ];
 */
@@ -110,14 +99,23 @@ let ventas = [
     // "selectSucursal": "sucursal1",
     // "precioFinal": "100",
     // "fecha": "2026-06-04",
-    // "hora": "12:00",
-    // "selectStock": "disponible"
-    // }
+    // "hora": "12:00"
+    // };
 ];
 
 let auxVentas = localStorage.getItem('ventas');
 
 let filtros = obtenerFiltros();
+
+
+let productos = [];
+let ultimoId = Number(localStorage.getItem('ultimoId')) || 0;
+let auxProductos = localStorage.getItem('productos');
+
+if(auxProductos){
+    productos = JSON.parse(auxProductos);
+    listarVentas();
+};
 
 if (auxVentas){
     ventas = JSON.parse(auxVentas);
@@ -147,15 +145,30 @@ botonFiltrar.addEventListener('click', (e =>{
 }));
 
 botonAgregarEjemplo.addEventListener("click", (e) => {
-    // Reset form fields to default values
+    function agregarCero(e){
+        if(e < 10) { e = "0" + e}
+        return e;
+    };
+    
+    let date = new Date();
+
+    let ano = date.getFullYear();
+    let mes = agregarCero(date.getMonth()+1);
+    let dia = agregarCero(date.getDate());
+    let fecha = ano + '-' + mes + '-' + dia;
+
+    let hora = agregarCero(date.getHours());
+    let minutos = agregarCero(date.getMinutes());
+    let horaMinutos = hora + ':' + minutos;
+    
     dqs('[name="nombreCliente"]').value = 'Cliente';
     dqs('[name="nombreProducto"]').value = 'Producto';
     dqs('[name="selectCategoria"]').value = 'categoria1';
     dqs('[name="selectSucursal"]').value = 'sucursal1';
     dqs('[name="precioFinal"]').value = '100';
-    dqs('[name="fecha"]').value = '2026-06-04';
-    dqs('[name="hora"]').value = '12:00';
-    dqs('[name="selectStock"]').value = 'disponible';
+    dqs('[name="fecha"]').value = fecha;
+    console.log(fecha);
+    dqs('[name="hora"]').value = horaMinutos;
     
     $('#modalAgregarEjemplo').modal('show');
 });
@@ -176,7 +189,6 @@ function obtenerFiltros() {
     return {
         categoria: dqs('[name="selectCategoriaFiltro"]').value,
         sucursal: dqs('[name="selectSucursalFiltro"]').value,
-        stock: dqs('[name="selectStockFiltro"]').value,
         precioMin: dqs('[name="parametroPrecioMin"]').value,
         precioMax: dqs('[name="parametroPrecioMax"]').value,
         fecha: dqs('[name="inputFechaFiltro"]').value,
@@ -192,7 +204,6 @@ function obtenerFiltros() {
 // filtros = {
 //     categoria,
 //     sucursal,
-//     stock,
 //     precioMin,
 //     precioMax,
 //     fecha,
@@ -203,7 +214,30 @@ function obtenerFiltros() {
 
 function listarVentas(){
     console.log(filtros)
+    let contenidoPrueba = '';
+    let contenidoSelect = '';
     let tbody = '';
+
+    productos
+        .forEach((producto) => {
+            contenidoPrueba += `
+            <tr>
+                <td>${producto.nombreProd}</td>
+                <td>${producto.precioProd}</td>
+                <td>${producto.stockProd}</td>
+            </tr>
+            `;
+
+            contenidoSelect += `
+            <option>
+                <p>${producto.nombreProd} | $${producto.precioProd} | Cant: ${producto.stockProd}</p>
+            </option>
+            `
+        });
+    
+        
+    tablaPrueba.innerHTML = contenidoPrueba
+    selectProductos.innerHTML = contenidoSelect
 
     ventas
         .filter((venta) => {
@@ -220,9 +254,6 @@ function listarVentas(){
             
             // Check sucursal
             if (filtros.sucursal && venta.selectSucursal !== filtros.sucursal) return false;
-            
-            // Check stock
-            if (filtros.stock && venta.selectStock !== filtros.stock) return false;
             
             // Check price range
             if (filtros.precioMin && Number(venta.precioFinal) < Number(filtros.precioMin)) return false;
@@ -249,11 +280,6 @@ function listarVentas(){
                 <td>${venta.precioFinal}</td>
                 <td>${venta.fecha}</td>
                 <td>${venta.hora}</td>
-                <td class="align-middle">
-                    <span class="p-2 badge ${venta.selectStock === 'disponible' ? 'badge-success' : 'badge-danger'}">
-                        ${venta.selectStock === 'disponible' ? 'Disponible' : 'Agotado'}
-                    </span>
-                </td>
                 <td>
                     <button name="botonEliminarElemento" class="btn btn-danger">Eliminar</button>
                     <button name="botonEditarElemento" class="btn btn-warning">Editar</button>
@@ -262,9 +288,9 @@ function listarVentas(){
             `;
         });
     
-    dqs("table tbody").innerHTML = tbody;
+    dqs('[name="tablaVentas"]').innerHTML = tbody;
 
-    let filas = dqsAll("table tbody tr");
+    let filas = dqsAll('[tablaVentas] tr');
     let idxAEliminar = null;
 
     filas
@@ -320,6 +346,7 @@ botonFiltrarAplicar.addEventListener('click', () => {
 });
 
 botonGuardar.addEventListener("click", (e) => {
+
     let formTabla = {
         nombreCliente: dqs('[name="nombreCliente"]').value,
         nombreProducto: dqs('[name="nombreProducto"]').value,
@@ -327,8 +354,7 @@ botonGuardar.addEventListener("click", (e) => {
         selectSucursal: dqs('[name="selectSucursal"]').value,
         precioFinal: dqs('[name="precioFinal"]').value,
         fecha: dqs('[name="fecha"]').value,
-        hora: dqs('[name="hora"]').value,
-        selectStock: dqs('[name="selectStock"]').value
+        hora: dqs('[name="hora"]').value
     };
     
     ventas.push(formTabla);
@@ -352,7 +378,6 @@ function editarVenta(index) {
     dqs('#modalEditarEjemplo [name="precioFinal"]').value = venta.precioFinal;
     dqs('#modalEditarEjemplo [name="fecha"]').value = venta.fecha;
     dqs('#modalEditarEjemplo [name="hora"]').value = venta.hora;
-    dqs('#modalEditarEjemplo [name="selectStock"]').value = venta.selectStock;
 
     $("#modalEditarEjemplo").modal("show");
 }
@@ -370,8 +395,7 @@ function guardarEdicion() {
         selectSucursal: dqs('#modalEditarEjemplo [name="selectSucursalEditar"]').value,
         precioFinal: dqs('#modalEditarEjemplo [name="precioFinal"]').value,
         fecha: dqs('#modalEditarEjemplo [name="fecha"]').value,
-        hora: dqs('#modalEditarEjemplo [name="hora"]').value,
-        selectStock: dqs('#modalEditarEjemplo [name="selectStock"]').value
+        hora: dqs('#modalEditarEjemplo [name="hora"]').value
     };
 
     localStorage.setItem("ventas", JSON.stringify(ventas));
@@ -380,6 +404,10 @@ function guardarEdicion() {
     $("#modalEditarEjemplo").modal("hide");
     indexEdicion = null;
 }
+
+dqs('[name="botonPrueba"]').addEventListener('click', (e) => {
+    $('#modalPrueba').modal('show');
+});
 
 dqs('[name="botonProductos"]').addEventListener('click', (e) => {
     window.location.href = "/dashboard/productos";

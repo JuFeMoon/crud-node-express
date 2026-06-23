@@ -25,7 +25,9 @@ app.use(session(
   }
 ));
 
-app.use(express.static(path.join(__dirname, '/public')));
+app.use(express.static(path.join(__dirname, '/public'), {
+  index: 'login.html'
+}));
 
 const usuariosRoutes = require("./routes/usuarios-routes");
 const dashboardRoutes = require("./routes/dashboard-routes");

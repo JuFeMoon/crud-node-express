@@ -75,6 +75,8 @@ let editarStockProd = dqs('[name="editarStockProd"]');
 let editarEstadoProd = dqs('[name="editarEstadoProd"]');
 let btnEditarProd = dqs('[name="btnEditarProd"]');
 
+    // OTROS ELEMENTOS
+
     // ELEMENTOS MODAL FILTRAR
 //    AGREGAR DESPUÉS
 
@@ -93,14 +95,15 @@ let productos = {
 };
 
 let ultimoId = Number(localStorage.getItem('ultimoId')) || 0;
-let indexEliminar = null;
-let indexEdicion = null;
 let auxProductos = localStorage.getItem('productos');
 
 if(auxProductos){
     productos = JSON.parse(auxProductos);
     listarProductos();
 };
+
+let indexEliminar = null;
+let indexEdicion = null;
 
     // FUNCIONALIDADES DEL SISTEMA
 
@@ -131,7 +134,7 @@ function listarProductos(){
             </tr>
             `;
     });
-    
+
     dqs("table tbody").innerHTML = tbody;
 
     let filas = dqsAll('table tbody tr');
@@ -254,7 +257,10 @@ function editarProducto(){
 
     // ESCUCHA DE EVENTOS
 
-        //  BOTONES MODALES
+dqs('[name="botonDashboard"]').addEventListener('click', (e) => {
+    window.location.href = "/usuarios/dashboard";
+});
+
 btnModalAgregarProd.addEventListener('click', (e) => {
     $('#modalAgregarProd').modal('show');
     let predefinidos = e.shiftKey;
